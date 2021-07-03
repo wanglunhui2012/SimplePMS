@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="60 seconds">
+    <contextName>SimplPMS</contextName>
+    <property name="COMPLEX_PATTERN" value="%blue(%contextName) - %red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %green([%thread]) %yellow(%-5level) %boldMagenta(%logger) %cyan([%file:%line]) - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${COMPLEX_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <appender name="PROJECT_DEBUG_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${COMPLEX_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="indi.simple.pms" level="debug" additivity="false">
+        <appender-ref ref="PROJECT_DEBUG_CONSOLE" />
+    </logger>
+    <logger name="cn.hutool.db.sql.SqlLog" level="debug" additivity="false">
+        <appender-ref ref="PROJECT_DEBUG_CONSOLE" />
+    </logger>
+</configuration>

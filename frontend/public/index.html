@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= webpackConfig.name %></title>
+    <style>
+        html,body,#app{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .loaderContainer {
+            height: 100%;
+            background: #2d3a4b;
+        }
+        .loader {
+            width: 250px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: helvetica, arial, sans-serif;
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #909399;
+            letter-spacing: 0.2em;
+        }
+        .loader::before,
+        .loader::after {
+            content: "";
+            display: block;
+            width: 15px;
+            height: 15px;
+            background: #409EFF;
+            position: absolute;
+            animation: load 0.7s infinite alternate ease-in-out;
+        }
+        .loader::before {
+            top: 0;
+        }
+        .loader::after {
+            bottom: 0;
+        }
+        @-moz-keyframes load {
+            0% {
+                left: 0;
+                height: 30px;
+                width: 15px;
+            }
+            50% {
+                height: 8px;
+                width: 40px;
+            }
+            100% {
+                left: 235px;
+                height: 30px;
+                width: 15px;
+            }
+        }
+        @-webkit-keyframes load {
+            0% {
+                left: 0;
+                height: 30px;
+                width: 15px;
+            }
+            50% {
+                height: 8px;
+                width: 40px;
+            }
+            100% {
+                left: 235px;
+                height: 30px;
+                width: 15px;
+            }
+        }
+        @-o-keyframes load {
+            0% {
+                left: 0;
+                height: 30px;
+                width: 15px;
+            }
+            50% {
+                height: 8px;
+                width: 40px;
+            }
+            100% {
+                left: 235px;
+                height: 30px;
+                width: 15px;
+            }
+        }
+        @keyframes load {
+            0% {
+                left: 0;
+                height: 30px;
+                width: 15px;
+            }
+            50% {
+                height: 8px;
+                width: 40px;
+            }
+            100% {
+                left: 235px;
+                height: 30px;
+                width: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<noscript>
+    <strong>We're sorry but frontend doesn't work properly without JavaScript enabled. Please enable it to
+        continue.</strong>
+</noscript>
+<div id="app">
+    <div class="loaderContainer">
+        <div class="loader">Loading...</div>
+    </div>
+</div>
+<!-- built files will be auto injected -->
+</body>
+</html>

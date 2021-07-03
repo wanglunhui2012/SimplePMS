@@ -1,0 +1,64 @@
+
+.vue-treeselect--has-value .vue-treeselect__multi-value{
+    margin-bottom: 0px;
+}
+.vue-treeselect__multi-value-item-container{
+    padding-top: 0px;
+}
+.vue-treeselect__multi-value-item{
+    background: #f4f4f5;
+    padding: 0;
+    border: 0px solid transparent;
+    color: #909399;
+
+
+}
+.vue-treeselect__limit-tip{
+    padding-top: 0px;
+    background: #f4f4f5;
+}
+.vue-treeselect__limit-tip-text{
+    margin: 0;
+    padding: 0;
+
+}
+.vue-treeselect--searchable.vue-treeselect--multi.vue-treeselect--has-value .vue-treeselect__input-container{
+    padding-top: 0px;
+}
+.vue-treeselect--multi .vue-treeselect__input{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.el-form-item--medium .el-form-item__content {
+    line-height: 34px;
+}
+.vue-treeselect__value-container, .vue-treeselect__multi-value{
+    vertical-align: inherit;
+}
+.vue-treeselect__value-remove {
+    color: #909399;
+    border-left: 0px solid #fff;
+}
+
+
+.vue-treeselect__label{
+    font-size: 14px;
+    font-weight: 400;
+
+}
+
+
+.vue-treeselect__menu-container{
+    width: 400px;
+}
+
+.vue-treeselect__placeholder{
+    color: #b4bccc;
+    font-size: 14px;
+}
+
+.vue-treeselect__single-value {
+    color: #606266;
+    font-size: 14px;
+}

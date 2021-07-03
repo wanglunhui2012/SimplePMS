@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.simple.pms.mapper.SystemDepartmentMapper">
+
+    <sql id="systemDepartmentDO">
+        select id,name,parent_id,leader,phone_number,email,remark,create_user_id,create_department_id,create_time,update_time
+        from system_department
+    </sql>
+
+    <select id="searchIdList" resultType="java.lang.Long">
+        select id from system_department
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemDepartmentSearchDTO.idList!=null and systemDepartmentSearchDTO.idList.size()>0">
+                and id in
+                <foreach collection="systemDepartmentSearchDTO.idList" item="item" open="(" close=")" separator=","
+                         index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="systemDepartmentSearchDTO.name!=null and systemDepartmentSearchDTO.name!=''">
+                and name like concat('%',#{systemDepartmentSearchDTO.name},'%')
+            </if>
+            <if test="systemDepartmentSearchDTO.parentId!=null">
+                and parent_id=#{systemDepartmentSearchDTO.parentId}
+            </if>
+            <if test="systemDepartmentSearchDTO.leader!=null and systemDepartmentSearchDTO.leader!=''">
+                and leader like concat('%',#{systemDepartmentSearchDTO.leader},'%')
+            </if>
+            <if test="systemDepartmentSearchDTO.sqlSlot!=null and systemDepartmentSearchDTO.sqlSlot!=''">
+                ${systemDepartmentSearchDTO.sqlSlot}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

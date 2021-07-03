@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.simple.pms.mapper.SystemLogMapper">
+
+    <sql id="systemLogDO">
+        select id,name,user_id,user_name,url,method,params,time,ip,log_type,exception,create_time
+        from system_log
+    </sql>
+
+    <select id="searchPage" resultType="indi.simple.pms.entity.dataobject.SystemLogDO">
+        <include refid="systemLogDO"></include>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemLogSearchDTO.name!=null and systemLogSearchDTO.name!=''">
+                name like concat('%',#{systemLogSearchDTO.name},'%')
+            </if>
+            <if test="systemLogSearchDTO.username!=null and systemLogSearchDTO.username!=''">
+                and user_name like concat('%',#{systemLogSearchDTO.username},'%')
+            </if>
+            <if test="systemLogSearchDTO.logType!=null and systemLogSearchDTO.logType!=''">
+                and log_type like concat('%',#{systemLogSearchDTO.logType},'%')
+            </if>
+        </trim>
+    </select>
+
+    <select id="getIPCount" resultType="java.lang.Integer">
+		select count(*) from (select ip from system_log where create_time between #{beginDateTime} and #{endDateTime} group by ip)
+	</select>
+
+    <select id="getPageCount" resultType="java.lang.Integer">
+		select count(*) from system_log where create_time between #{beginDateTime} and #{endDateTime}
+	</select>
+
+</mapper>

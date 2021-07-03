@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.simple.pms.mapper.SystemJobMapper">
+
+    <sql id="systemJobDO">
+        select id,code,name,remark,create_user_id,create_department_id,create_time,update_time
+        from system_job
+    </sql>
+
+    <select id="searchPage" resultType="indi.simple.pms.entity.dataobject.SystemJobDO">
+        <include refid="systemJobDO"></include>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemJobSearchDTO.idList!=null and systemJobSearchDTO.idList.size()>0">
+                and id in
+                <foreach collection="systemJobSearchDTO.idList" item="item" open="(" close=")" separator=","
+                         index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="systemJobSearchDTO.name!=null and systemJobSearchDTO.name!=''">
+                and name like concat('%',#{systemJobSearchDTO.name},'%')
+            </if>
+            <if test="systemJobSearchDTO.sqlSlot!=null and systemJobSearchDTO.sqlSlot!=''">
+                ${systemJobSearchDTO.sqlSlot}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByUserIdList" resultType="indi.simple.pms.entity.dataobject.SystemJobDO">
+        select distinct j.id,j.code,j.`name`,j.remark,j.create_user_id,j.create_department_id,j.create_time,j.update_time from system_job j
+        left join system_user_job uj on uj.job_id=j.id
+        left join system_user u on uj.user_id=u.id
+        <trim prefix="where" prefixOverrides="and">
+            <choose>
+                <when test="userIdList!=null and userIdList.size()>0">
+                    u.id in
+                    <foreach collection="userIdList" item="item" open="(" close=")" separator="," index="index">
+                        #{item}
+                    </foreach>
+                </when>
+                <otherwise>
+                    u.id in (null)
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+
+</mapper>

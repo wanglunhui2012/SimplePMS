@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.simple.pms.mapper.SystemDictionaryDetailMapper">
+
+    <sql id="systemDictionaryDetailDO">
+        select id,dictionary_id,`key`,value,sort,remark,create_user_id,create_department_id,create_time,update_time
+        from system_dictionary_detail
+    </sql>
+
+    <select id="searchPage" resultType="indi.simple.pms.entity.dataobject.SystemDictionaryDetailDO">
+        <include refid="systemDictionaryDetailDO"></include>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemDictionaryDetailSearchDTO.idList!=null and systemDictionaryDetailSearchDTO.idList.size()>0">
+                and id in
+                <foreach collection="systemDictionaryDetailSearchDTO.idList" item="item" open="(" close=")"
+                         separator=","
+                         index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="systemDictionaryDetailSearchDTO.dictionaryId!=null">
+                and dictionary_id=#{systemDictionaryDetailSearchDTO.dictionaryId}
+            </if>
+            <if test="systemDictionaryDetailSearchDTO.key!=null and systemDictionaryDetailSearchDTO.key!=''">
+                and `key` like concat('%',#{systemDictionaryDetailSearchDTO.key},'%')
+            </if>
+            <if test="systemDictionaryDetailSearchDTO.value!=null and systemDictionaryDetailSearchDTO.value!=''">
+                and value like concat('%',#{systemDictionaryDetailSearchDTO.value},'%')
+            </if>
+            <if test="systemDictionaryDetailSearchDTO.sqlSlot!=null and systemDictionaryDetailSearchDTO.sqlSlot!=''">
+                ${systemDictionaryDetailSearchDTO.sqlSlot}
+            </if>
+        </trim>
+        order by sort asc
+    </select>
+
+</mapper>

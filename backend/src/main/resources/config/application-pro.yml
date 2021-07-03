@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.108.216.225:3306/simple_pms?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: wanglunhui199606
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 20
+      max-lifetime: 60000
+      idle-timeout: 30000
+      connection-test-query: select 1
+  redis:
+    host: 47.108.216.225
+    port: 6379
+    password: wanglunhui199606
+    database: 0
+    timeout: 6000
+    ssl: false
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1ms
+
+system:
+  file:
+    fileDownloadUrlPrefix: fileUpload/
+    fileUploadPath: /var/fileUpload/
+    defaultAvatarName: defaultAvatar.png
+    endpoint: http://47.108.216.225:8080/

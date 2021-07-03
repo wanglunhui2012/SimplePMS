@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.simple.pms.mapper.SystemUserMapper">
+
+    <sql id="systemUserDO">
+        select id,name,nick_name,password,salt,avatar_url,enable,email,phone_number,sex,remark,department_id,create_user_id,create_department_id,create_time,update_time from system_user
+    </sql>
+
+    <select id="searchPage" resultType="indi.simple.pms.entity.dataobject.SystemUserDO">
+        <include refid="systemUserDO"></include>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemUserSearchDTO.idList!=null and systemUserSearchDTO.idList.size()>0">
+                and id in
+                <foreach collection="systemUserSearchDTO.idList" item="item" open="(" close=")" separator="," index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="systemUserSearchDTO.name!=null and systemUserSearchDTO.name!=''">
+                and name like concat('%',#{systemUserSearchDTO.name},'%')
+            </if>
+            <if test="systemUserSearchDTO.nickName!=null and systemUserSearchDTO.nickName!=''">
+                and nick_name like concat('%',#{systemUserSearchDTO.nickName},'%')
+            </if>
+            <if test="systemUserSearchDTO.enable!=null">
+                and enable = #{systemUserSearchDTO.enable}
+            </if>
+            <if test="systemUserSearchDTO.email!=null">
+                and email = #{systemUserSearchDTO.email}
+            </if>
+            <if test="systemUserSearchDTO.phoneNumber!=null">
+                and phone_number = #{systemUserSearchDTO.phoneNumber}
+            </if>
+            <if test="systemUserSearchDTO.sex!=null">
+                and sex = #{systemUserSearchDTO.sex}
+            </if>
+            <if test="systemUserSearchDTO.departmentIdList!=null and systemUserSearchDTO.departmentIdList.size()>0">
+                and department_id in
+                <foreach collection="systemUserSearchDTO.departmentIdList" item="item" open="(" close=")" separator="," index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="systemUserSearchDTO.sqlSlot!=null and systemUserSearchDTO.sqlSlot!=''">
+                ${systemUserSearchDTO.sqlSlot}
+            </if>
+        </trim>
+    </select>
+
+    <select id="getNameListByDepartmentId" resultType="string">
+        select name from system_user  where department_id in
+        <foreach collection="departmentIdList" item="item" open="(" close=")" separator="," index="index">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

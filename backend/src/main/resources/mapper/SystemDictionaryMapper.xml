@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="indi.simple.pms.mapper.SystemDictionaryMapper">
+
+    <sql id="systemDictionaryDO">
+        select id,name,remark,create_user_id,create_department_id,create_time,update_time
+        from system_dictionary
+    </sql>
+
+    <select id="searchPage" resultType="indi.simple.pms.entity.dataobject.SystemDictionaryDO">
+        <include refid="systemDictionaryDO"></include>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="systemDictionarySearchDTO.idList!=null and systemDictionarySearchDTO.idList.size()>0">
+                and id in
+                <foreach collection="systemDictionarySearchDTO.idList" item="item" open="(" close=")" separator=","
+                         index="index">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="systemDictionarySearchDTO.name!=null and systemDictionarySearchDTO.name!=''">
+                and name like concat('%',#{systemDictionarySearchDTO.name},'%')
+            </if>
+            <if test="systemDictionarySearchDTO.sqlSlot!=null and systemDictionarySearchDTO.sqlSlot!=''">
+                ${systemDictionarySearchDTO.sqlSlot}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

@@ -1,0 +1,173 @@
+buildscript {
+    // 仓库
+    repositories {
+        // mavenCentral()
+        // jcenter()
+        // google()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+}
+
+// 插件
+plugins {
+    id 'org.springframework.boot' version '2.3.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+apply plugin: 'jacoco'
+
+group = 'com.wlh'
+version = '0.0.1-SNAPSHOT'
+
+// java插件配置，https://docs.gradle.org/current/userguide/java_plugin.html
+java {
+    // 打包名
+    archivesBaseName = 'SimplePMS'
+    // 指定java版本
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        // 从annotationProcessor继承
+        extendsFrom annotationProcessor
+    }
+    // 排除 tomcat 依赖（使用 undertow）
+    //implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    implementation {
+        // 排除依赖
+        exclude module: "slf4j-log4j12"
+        exclude module: 'junit'
+    }
+}
+
+allprojects {
+    // 仓库
+    repositories {
+        // mavenCentral()
+        // jcenter()
+        // google()
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+}
+
+ext{
+    set('user','wlh')
+    set('lombokVersion','1.18.16')
+    springbootVersion = '2.3.7.RELEASE'
+    mybatisPlusVersion = '3.3.2'
+}
+
+// 依赖
+dependencies {
+    // implementation引用的包对于其他module来说是不可见的,compile引用的包对于其他module来说是可见的
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.9'
+    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.3.1'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+    implementation group: 'cn.hutool', name: 'hutool-all', version: '5.6.3'
+    implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.9.0'
+    //dependencies { compile files('lib/starter-1.0-SNAPSHOT.jar')} // 本地jar包
+    //dependencies { compile fileTree(dir:'libs',include:['*.jar'])} // 本地目录下的jar包
+    testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+    ignoreFailures = true
+}
+
+/**
+ * 添加jacoco测试覆盖率
+ */
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled true
+        html.enabled true
+
+        xml.destination file("${buildDir}/reports/jacoco/jacocoReport/jacocoXml.xml")
+        csv.destination file("${buildDir}/reports/jacoco/jacocoReport/jacocoCsv.csv")
+        html.destination file("${buildDir}/reports/jacoco/jacocoReport/jacocoHtml")
+    }
+}
+tasks.check.dependsOn jacocoTestReport
+// clean时删除logs目录
+task cleanOutDir(type: Delete) {
+    delete "${projectDir}/logs"
+    delete "${rootDir}/logs"
+}
+tasks.clean.dependsOn(cleanOutDir)
+
+// 根据环境打包默认dev开发环境，在yml配置文件里面spring.profiles.active=@env@，命令：./gradlew -x test clean bootJar -Denv=dev（-x test跳过单元测试），会自动替换@env@为dev
+def env = System.getProperty("env") ?: "dev"
+processResources {
+    filesNotMatching(["**/*.png","**/*.ico"]) { // 不能对static下的png和ico文件进行此操作，否则会损害png文件
+        it.filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [env: env])
+    }
+}
+
+// 打包分离
+bootJar {
+    manifest {
+        attributes("Implementation-Title": "SimplePMS Application",
+                "Implementation-Version": archiveVersion)
+    }
+}
+
+task MyTask{
+    // 执行简单Grovvy语法，兼容Java语法
+    String str = 'this is a simple test'
+    println "原始值：" + str
+    println "转大写后：" + str.toUpperCase()
+
+    // 使用gradle.properties中的变量
+    println username
+    // 使用ext中的变量
+    println rootProject.ext.user
+}
+
+// task遍历顺序是：allprojects > subprojects > Child Project
+
+// 方法1
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+// 方法2
+/*tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
+}*/
+
+allprojects {
+    tasks.create('hello') {
+        doLast {
+            task ->
+                print "project name is $task.project.name \n"
+        }
+    }
+}
