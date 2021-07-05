@@ -64,7 +64,10 @@ npm run build:prod
 
 # 交流群
 
-![](./backend/assets/QQ1.jpg)
+<center class = "half">
+	<img src = "./backend/assets/QQ1.jpg"  width = "40%" align = left/>
+	<img src = "./backend/assets/微信1.png"  width = "40%" align = left/>
+</center>
 
 # 感谢
 
@@ -73,5 +76,5 @@ npm run build:prod
 
 # 关于我
 
-从公司离职回家，没事就参照一些项目做出来的，有想要进行项目合作的可以联系我（QQ：1396509884）。
+闲人一个，没事就参照一些项目做出来的，有想要进行项目合作的可以联系我（QQ：1396509884，微信：wlh15171478698）。
 
