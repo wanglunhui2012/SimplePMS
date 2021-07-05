@@ -43,8 +43,8 @@ export default {
     },
     navbar: {
         dashboard: '首页',
-        github: '项目地址',
-        doc: '文档',
+        github: 'Github地址',
+        gitee: 'Gitee地址',
         logOut: '退出登录',
         profile: '个人中心',
         theme: '换肤',

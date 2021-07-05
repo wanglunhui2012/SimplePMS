@@ -37,13 +37,13 @@
                             {{ $t('navbar.dashboard') }}
                         </el-dropdown-item>
                     </router-link>
-                    <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
+                    <a target="_blank" href="https://github.com/wanglunhui2012/SimplePMS">
                         <el-dropdown-item>
                             {{ $t('navbar.github') }}
                         </el-dropdown-item>
                     </a>
-                    <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-                        <el-dropdown-item>{{ $t('navbar.doc') }}</el-dropdown-item>
+                    <a target="_blank" href="https://gitee.com/wanglunhui/simple-pms">
+                        <el-dropdown-item>{{ $t('navbar.gitee') }}</el-dropdown-item>
                     </a>
                     <el-dropdown-item divided @click.native="logout">
                         <span style="display:block;">{{ $t('navbar.logOut') }}</span>

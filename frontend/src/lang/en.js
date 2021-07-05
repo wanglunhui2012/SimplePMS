@@ -44,7 +44,7 @@ export default {
     navbar: {
         dashboard: 'Dashboard',
         github: 'Github',
-        doc: 'Docs',
+        gitee: 'Gitee',
         logOut: 'Log Out',
         profile: 'Profile',
         theme: 'Theme',

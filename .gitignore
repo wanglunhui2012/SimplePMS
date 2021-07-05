@@ -4,5 +4,5 @@
 /backend/out/
 
 /frontend/.idea/
-/frontend/build/
+/frontend/dist/
 /frontend/node_modules/

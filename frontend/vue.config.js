@@ -15,6 +15,9 @@ const name = Config.systemName || 'vue Element Admin' // 网页标题
 // port = 9527 npm run dev OR npm run dev --port = 9527
 const port = process.env.port || process.env.npm_config_port || 9527 // dev port
 
+// 导入compression-webpack-plugin
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
     /**
@@ -27,7 +30,7 @@ module.exports = {
     publicPath: '/',
     outputDir: 'dist',
     assetsDir: 'static',
-    productionSourceMap: false,
+    productionSourceMap: false, // 打包时不生成.map文件
     devServer: {
         port: port,
         open: true,
@@ -56,7 +59,17 @@ module.exports = {
             alias: {
                 '@': resolve('src')
             }
-        }
+        },
+        plugins: process.env.NODE_ENV === 'production'?[
+            new CompressionWebpackPlugin({
+                filename: '[path].gz[query]', // 压缩后的文件名(保持原文件名，后缀加.gz)
+                algorithm: 'gzip', // 使用gzip压缩
+                test: new RegExp('.(' + ['html', 'js', 'css'].join('|') + ')$'), // 匹配文件名
+                threshold: 10240, // 对超过10k的数据压缩
+                minRatio: 0.8, // 压缩率小于0.8才会压缩
+                deleteOriginalAssets: false // 是否删除未压缩的源文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false（比如删除打包后的gz后还可以加载到原始资源文件）
+            })
+        ]:[]
     },
     chainWebpack(config) {
         // it can improve the speed of the first screen, it is recommended to turn on preload
